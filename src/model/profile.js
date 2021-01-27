@@ -17,11 +17,27 @@ module.exports = {
     })
   },
   updateProfileModel: (data, id) => {
-    console.log(data)
-    console.log(id)
     return new Promise((resolve, reject) => {
       connection.query(
         'UPDATE profile SET ? WHERE user_id = ?',
+        [data, id],
+        (error, result) => {
+          const newResult = {
+            ...data
+          }
+          if (!error) {
+            resolve(newResult)
+          } else {
+            reject(new Error(error))
+          }
+        }
+      )
+    })
+  },
+  updatePass: (data, id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        'UPDATE user SET ? WHERE user_id = ?',
         [data, id],
         (error, result) => {
           const newResult = {

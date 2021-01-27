@@ -9,8 +9,8 @@ const {
   getFriendList,
   getFriendReq
 } = require('../controller/friendList')
-router.post('/:id', auth, searchFriend)
-router.post('/add/:id', auth, addFriend)
-router.patch('/acc/:id', auth, accFriend)
-router.get('/list/:id', auth, getFriendList)
-router.get('/list/req/:id', auth, getFriendReq)
+router.post('/:id', searchFriend)
+router.post('/add/:id', addFriend)
+router.patch('/acc/:id', accFriend)
+router.get('/list/:id', getFriendList)
+router.get('/list/req/:id', getFriendReq)

@@ -2,6 +2,7 @@ const {
   searchFriendModel,
   addFriendModel,
   accFriendModel,
+  accFriendModel2,
   getFriendListModel,
   getFriendReqModel
 } = require('../model/friendList')
@@ -30,27 +31,40 @@ module.exports = {
           id_user1: user_id,
           id_user2: result[0].user_id,
           friend_status: 0,
-          created_at: new Date()
+          created_at: new Date(),
+          status: ''
+        }
+        const setData2 = {
+          id_user1: result[0].user_id,
+          id_user2: user_id,
+          friend_status: 0,
+          created_at: new Date(),
+          status: 'req'
         }
         const add = await addFriendModel(setData)
+        const add2 = await addFriendModel(setData2)
         return helper.response(response, 200, 'Success Add Friend', add)
       } else {
         return helper.response(response, 200, 'User not found')
       }
     } catch (error) {
-      console.log(error)
       return helper.response(response, 400, 'Bad request', error)
     }
   },
   accFriend: async (request, response) => {
     try {
-      const { id_user2, id_user1 } = request.body
+      const { user1, user2 } = request.body
       const setData = {
-        id_user2,
-        id_user1
+        id_user2: user2,
+        id_user1: user1
+      }
+      const setData2 = {
+        id_user1: user1,
+        id_user2: user2
       }
       const result = await accFriendModel(setData)
-      return helper.response(response, 200, 'Success acc friend', result)
+      const result2 = await accFriendModel2(setData2)
+      return helper.response(response, 200, 'Success acc friend', result2)
     } catch (error) {
       console.log(error)
       return helper.response(response, 400, 'Bad request', error)

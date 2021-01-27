@@ -4,7 +4,7 @@ module.exports = {
   searchFriendModel: (email) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT user_id, user_email FROM USER WHERE user_email = ?',
+        'SELECT*FROM USER WHERE user_email = ?',
         email,
         (error, result) => {
           if (!error) {
@@ -19,7 +19,7 @@ module.exports = {
   addFriendModel: (data) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'INSERT INTO friend_list SET?',
+        'INSERT INTO friend_list SET ?',
         data,
         (error, result) => {
           if (!error) {
@@ -53,10 +53,28 @@ module.exports = {
       )
     })
   },
+  accFriendModel2: (data) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        'UPDATE friend_list SET friend_status = 1 WHERE id_user1 = ? AND id_user2 = ? ',
+        [data.id_user2, data.id_user1],
+        (error, result) => {
+          if (!error) {
+            const newResult = {
+              ...data
+            }
+            resolve(newResult)
+          } else {
+            reject(new Error(error))
+          }
+        }
+      )
+    })
+  },
   getFriendListModel: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT * FROM friend_list JOIN PROFILE ON friend_list.id_user1 = profile.user_id WHERE friend_list.id_user2 = ${id} OR friend_list.id_user1 = ${id}  AND friend_list.friend_status=1`,
+        `SELECT * FROM PROFILE JOIN friend_list ON profile.user_id = friend_list.id_user2 WHERE friend_list.id_user1 = ${id} AND friend_list.friend_status = 1`,
         (error, result) => {
           if (!error) {
             resolve(result)
@@ -70,7 +88,7 @@ module.exports = {
   getFriendReqModel: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT * FROM friend_list JOIN PROFILE ON friend_list.id_user1 = profile.user_id WHERE friend_list.id_user2 = ${id} AND friend_list.friend_status=0`,
+        `SELECT*FROM PROFILE JOIN friend_list ON profile.user_id = friend_list.id_user2  WHERE friend_list.friend_status=0 AND friend_list.id_user1 = ${id} AND friend_list.friend_status=0 AND friend_list.status='req'`,
         (error, result) => {
           if (!error) {
             resolve(result)
