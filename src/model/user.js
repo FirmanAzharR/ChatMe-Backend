@@ -47,6 +47,36 @@ module.exports = {
       )
     })
   },
+  cekUserKey: (data) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        'SELECT user_id,user_email,key_reset FROM user WHERE key_reset =  ?',
+        data,
+        (error, result) => {
+          if (!error) {
+            resolve(result)
+          } else {
+            reject(new Error(error))
+          }
+        }
+      )
+    })
+  },
+  updateUser: (data, mail) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        'UPDATE user SET ? WHERE user_email=?',
+        [data, mail],
+        (error, result) => {
+          if (!error) {
+            resolve(result)
+          } else {
+            reject(new Error(error))
+          }
+        }
+      )
+    })
+  },
   signInModel: (email) => {
     return new Promise((resolve, reject) => {
       connection.query(
