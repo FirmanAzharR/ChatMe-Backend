@@ -3,7 +3,7 @@ module.exports = {
   getChatList: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT room_chat.key_room, room_chat.user1,room_chat.user2,chat.message,chat.create_at, profile.user_fullname FROM PROFILE JOIN room_chat ON profile.user_id = room_chat.user2 JOIN chat ON room_chat.key_room = chat.key_room WHERE room_chat.user1 = ${id} GROUP BY room_chat.key_room ORDER BY(chat.create_at) DESC`,
+        `SELECT room_chat.key_room, room_chat.user1,room_chat.user2,chat.message,chat.create_at, profile.user_fullname,profile.user_photo FROM PROFILE JOIN room_chat ON profile.user_id = room_chat.user2 JOIN chat ON room_chat.key_room = chat.key_room WHERE room_chat.user1 = ${id} GROUP BY room_chat.key_room ORDER BY(chat.create_at) DESC`,
         (error, result) => {
           if (!error) {
             resolve(result)
@@ -17,7 +17,7 @@ module.exports = {
   getChat: (data) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT profile.user_fullname,room_chat.key_room, room_chat.user1,room_chat.user2,chat.id_sender,chat.id_reciver,chat.message,chat.create_at FROM PROFILE JOIN room_chat ON profile.user_id = room_chat.user2 JOIN chat ON room_chat.key_room = chat.key_room WHERE room_chat.user1 = ${data.id} AND room_chat.key_room = ${data.key}`,
+        `SELECT profile.user_fullname,profile.user_photo,room_chat.key_room, room_chat.user1,room_chat.user2,chat.id_sender,chat.id_reciver,chat.message,chat.create_at FROM PROFILE JOIN room_chat ON profile.user_id = room_chat.user2 JOIN chat ON room_chat.key_room = chat.key_room WHERE room_chat.user1 = ${data.id} AND room_chat.key_room = ${data.key}`,
         (error, result) => {
           if (!error) {
             resolve(result)
