@@ -48,6 +48,7 @@ module.exports = {
         return helper.response(response, 200, 'User not found')
       }
     } catch (error) {
+      console.log(error)
       return helper.response(response, 400, 'Bad request', error)
     }
   },

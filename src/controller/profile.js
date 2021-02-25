@@ -108,6 +108,33 @@ module.exports = {
       return helper.response(response, 400, 'Bad request', error)
     }
   },
+  deleteImageProfile: async (request, response) => {
+    try {
+      const { id } = request.body
+      const data = {
+        user_photo: '',
+        updated_at: new Date()
+      }
+      const cekProfile = await getProfileModel(id)
+      if (cekProfile.length > 0) {
+        fs.unlink(
+          `./uploads/profileImages/${cekProfile[0].user_photo}`,
+          function (err) {
+            if (err) {
+              console.log('image not found')
+            }
+          }
+        )
+        const result = await updateProfileModel(data, id)
+        return helper.response(response, 200, 'Remove Image Success', result)
+      } else {
+        return helper.response(response, 400, 'User not found')
+      }
+    } catch (error) {
+      console.log(error)
+      return helper.response(response, 400, 'Bad request', error)
+    }
+  },
   updateLocation: async (request, response) => {
     try {
       const { id } = request.params

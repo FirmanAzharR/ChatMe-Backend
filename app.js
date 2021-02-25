@@ -2,8 +2,10 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
-// const socket = require('socket.io')
 require('dotenv').config()
+
+//socket.io
+const socket = require('socket.io')
 
 const routesNavigation = require('./src/routesNavigation')
 
@@ -28,41 +30,28 @@ app.get('*', (req, res) => {
   res.status(404).send('Path not found')
 })
 
-// const http = require('http')
-// const server = http.createServer(app)
-// const io = socket(server, {
-//   cors: {
-//     origin: '*'
-//   }
-// })
-// io.on('connection', (socket) => {
-//   console.log('Socket.io Connect')
+const http = require('http')
+const server = http.createServer(app)
+const io = socket(server, {
+  cors: {
+    origin: '*'
+  }
+})
 
-//   socket.on('globalMsg', (data) => {
-//     console.log(data)
-//     io.emit('chatMsg', data)
-//   })
+io.on('connection', (socket) => {
+  console.log('Socket.io Connect')
 
-//   socket.on('privateMsg', (data) => {
-//     console.log(data)
-//     socket.emit('chatMsg', data)
-//   })
+  socket.on('joinRoom', (data) => {
+    console.log(data)
+    socket.join(data.key_room)
+  })
 
-//   socket.on('broadcastMsg', (data) => {
-//     console.log(data)
-//     socket.broadcast.emit('chatMsg', data)
-//   })
+  socket.on('roomMsg', (data) => {
+    console.log(data)
+    io.to(data.key_room).emit('chatMsg', data)
+  })
+})
 
-//   socket.on('joinRoom', (data) => {
-//     console.log(data)
-//     socket.join(data.room)
-//   })
-
-//   socket.on('roomMsg', (data) => {
-//     io.to(data.room).emit('chatMsg', data)
-//   })
-// })
-
-app.listen(process.env.PORT, '0.0.0.0', () => {
+server.listen(process.env.PORT, '0.0.0.0', () => {
   console.log(`Listening on port ${process.env.PORT}`)
 })

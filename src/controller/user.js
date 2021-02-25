@@ -10,6 +10,7 @@ const {
   updateUser,
   cekUserKey
 } = require('../model/user')
+const { updateProfileModel } = require('../model/profile')
 const { request } = require('express')
 
 module.exports = {
@@ -35,6 +36,7 @@ module.exports = {
         if (register) {
           const profile = {
             user_id: register.user_id,
+            user_status: 'offline',
             user_fullname: user_fullname
           }
           const result = await addProfile(profile)
@@ -62,10 +64,14 @@ module.exports = {
             user_name,
             user_email
           }
+          const data = {
+            user_status: 'online'
+          }
           const token = jwt.sign(payload, `${process.env.KEY}`, {
             expiresIn: '12h'
           })
           const result = { ...payload, token }
+          await updateProfileModel(data, user_id)
           return helper.response(response, 200, 'Success Login', result)
         } else {
           return helper.response(response, 400, 'Wrong Password')
@@ -134,6 +140,18 @@ module.exports = {
         const reset = await updateUser(data, result[0].user_email)
         return helper.response(response, 200, 'Success reset password')
       }
+    } catch (error) {
+      return helper.response(response, 400, 'Bad request', error)
+    }
+  },
+  logoutUser: async (request, response) => {
+    try {
+      const { user_id } = request.body
+      const data = {
+        user_status: 'offline'
+      }
+      const result = await updateProfileModel(data, user_id)
+      return helper.response(response, 200, 'logout success')
     } catch (error) {
       return helper.response(response, 400, 'Bad request', error)
     }

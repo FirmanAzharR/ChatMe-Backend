@@ -4,7 +4,7 @@ module.exports = {
   searchFriendModel: (email) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT*FROM USER WHERE user_email = ?',
+        'SELECT user.user_id,profile.user_status,profile.user_fullname,profile.user_photo,user.user_email FROM profile JOIN user ON profile.user_id = user.user_id WHERE user.user_email = ?',
         email,
         (error, result) => {
           if (!error) {
