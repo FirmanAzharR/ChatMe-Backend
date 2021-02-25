@@ -17,7 +17,7 @@ module.exports = {
   getLastMsg: (user_id1, key_room) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT chat.id_chat, chat.message,chat.create_at FROM PROFILE JOIN room_chat ON profile.user_id = room_chat.user2 JOIN chat ON room_chat.key_room = chat.key_room WHERE room_chat.user1 = ${user_id1} AND room_chat.key_room = ${key_room} ORDER BY (chat.id_chat) DESC LIMIT 1`,
+        `SELECT chat.id_chat, chat.message,DATE_FORMAT(chat.create_at,"%d/%m/%Y")  AS dates,TIME_FORMAT(chat.create_at, "%H:%i") AS times FROM PROFILE JOIN room_chat ON profile.user_id = room_chat.user2 JOIN chat ON room_chat.key_room = chat.key_room WHERE room_chat.user1 = ${user_id1} AND room_chat.key_room = ${key_room} ORDER BY (chat.id_chat) DESC LIMIT 1`,
         (error, result) => {
           if (!error) {
             resolve(result)
@@ -31,7 +31,7 @@ module.exports = {
   getChat: (data) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT profile.user_fullname,profile.user_photo,room_chat.key_room, room_chat.user1,room_chat.user2,chat.id_sender,chat.id_reciver,chat.message,chat.create_at FROM PROFILE JOIN room_chat ON profile.user_id = room_chat.user2 JOIN chat ON room_chat.key_room = chat.key_room WHERE room_chat.user1 = ${data.id} AND room_chat.key_room = ${data.key}`,
+        `SELECT profile.user_fullname,profile.user_photo,room_chat.key_room, room_chat.user1,room_chat.user2,chat.id_sender,chat.id_reciver,chat.message,DATE_FORMAT(chat.create_at,"%d/%m/%Y")  AS dates,TIME_FORMAT(chat.create_at, "%H:%i") AS times FROM PROFILE JOIN room_chat ON profile.user_id = room_chat.user2 JOIN chat ON room_chat.key_room = chat.key_room WHERE room_chat.user1 = ${data.id} AND room_chat.key_room = ${data.key}`,
         (error, result) => {
           if (!error) {
             resolve(result)

@@ -41,6 +41,16 @@ const io = socket(server, {
 io.on('connection', (socket) => {
   console.log('Socket.io Connect')
 
+  socket.on('friendNotif', (data) => {
+    console.log(data)
+    socket.join(data.user_id)
+  })
+
+  socket.on('sendMsgNotif', (data) => {
+    console.log(data)
+    socket.broadcast.to(data.friend_id).emit('notif', data)
+  })
+
   socket.on('joinRoom', (data) => {
     console.log(data)
     socket.join(data.key_room)
