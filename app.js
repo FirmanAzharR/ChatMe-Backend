@@ -23,8 +23,10 @@ app.use((request, response, next) => {
   )
   next()
 })
-app.use(express.static('uploads'))
+// app.use('/api2', routesNavigation)
+// app.use('/api2/fileUploadsApi2', express.static('uploads'))
 
+app.use(express.static('uploads'))
 app.use('/', routesNavigation)
 app.get('*', (req, res) => {
   res.status(404).send('Path not found')
