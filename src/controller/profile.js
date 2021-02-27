@@ -11,7 +11,6 @@ module.exports = {
   getProfile: async (request, response) => {
     try {
       const { id } = request.params
-      console.log(id)
       const getProfile = await getProfileModel(id)
       return helper.response(response, 200, 'Get Data Success', getProfile)
     } catch (error) {
