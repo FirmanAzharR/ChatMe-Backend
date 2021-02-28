@@ -7,7 +7,7 @@ const connection = mysql.createConnection({
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
   timezone: process.env.TIMEZONE,
-  insecureAuth : true
+  insecureAuth: false
 })
 
 connection.connect((error) => {
