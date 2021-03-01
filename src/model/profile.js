@@ -4,7 +4,7 @@ module.exports = {
   getProfileModel: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT*FROM USER JOIN PROFILE ON PROFILE.user_id = USER.user_id WHERE USER.user_id = ?',
+        'SELECT*FROM user JOIN PROFILE ON PROFILE.user_id = user.user_id WHERE USER.user_id = ?',
         id,
         (error, result) => {
           if (!error) {

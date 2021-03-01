@@ -2,12 +2,12 @@ const mysql = require('mysql')
 require('dotenv').config({ path: '../../.env' })
 
 const connection = mysql.createConnection({
-  host: process.env.HOST,
-  user: process.env.USER,
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE,
-  timezone: process.env.TIMEZONE,
-  insecureAuth: false
+  host: 'localhost',
+  user: 'root',
+  password: 'ChatMe!123',
+  database: 'telegramapp',
+  timezone: 'UTC',
+  insecureAuth: true
 })
 
 connection.connect((error) => {
