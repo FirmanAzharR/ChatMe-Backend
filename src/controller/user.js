@@ -106,7 +106,7 @@ module.exports = {
           from: `"ChatMe App "${process.env.EMAIL}`,
           to: `${user_email}`,
           subject: `Hello ${user_email}`,
-          html: `<a href="http://localhost:8080?key=${data.key_reset}&page=reset">Click This link to update your password</a>`
+          html: `<a href="https://chatsme.netlify.app?key=${data.key_reset}&page=reset">Click This link to update your password</a>`
         }
         transporter.sendMail(mailOPtion, (err, result) => {
           if (err) {
