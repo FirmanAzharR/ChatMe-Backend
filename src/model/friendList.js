@@ -74,7 +74,7 @@ module.exports = {
   getFriendListModel: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT * FROM PROFILE JOIN friend_list ON profile.user_id = friend_list.id_user2 WHERE friend_list.id_user1 = ${id} AND friend_list.friend_status = 1`,
+        `SELECT * FROM profile JOIN friend_list ON profile.user_id = friend_list.id_user2 WHERE friend_list.id_user1 = ${id} AND friend_list.friend_status = 1`,
         (error, result) => {
           if (!error) {
             resolve(result)
@@ -88,7 +88,7 @@ module.exports = {
   getFriendReqModel: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT*FROM PROFILE JOIN friend_list ON profile.user_id = friend_list.id_user2  WHERE friend_list.friend_status=0 AND friend_list.id_user1 = ${id} AND friend_list.friend_status=0 AND friend_list.status='req'`,
+        `SELECT*FROM profile JOIN friend_list ON profile.user_id = friend_list.id_user2  WHERE friend_list.friend_status=0 AND friend_list.id_user1 = ${id} AND friend_list.friend_status=0 AND friend_list.status='req'`,
         (error, result) => {
           if (!error) {
             resolve(result)
